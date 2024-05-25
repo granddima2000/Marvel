@@ -9,23 +9,50 @@ class CharList extends Component {
   state = {
     charList: [],
     loading: true,
-    error: false
+    error: false,
+    newItemLoading: false, // отвечает за loading 
+    offset: 210
   }
 
   marvelService = new MarvelService();
 
   componentDidMount() {
-    this.marvelService
-      .getAllCharacters()
-      .then(this.onCharListLoaded)
-      .catch(this.onError);
-  }
+    this.onRequest();
+    window.addEventListener('scroll', this.handleScroll);
+  };
 
-  onCharListLoaded = (charList) => {
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  };
+
+  onRequest = (offset) => { // Отвечает за запрос на сервер
+    this.onCharListLoading();
+    this.marvelService
+      .getAllCharacters(offset)
+      .then(this.onCharListLoaded)
+      .catch(this.onError)
+  };
+
+  onCharListLoading = () => { // Переключает в true newItemLoading
     this.setState({
-      charList,
-      loading: false,
+      newItemLoading: true
     });
+  };
+
+  handleScroll = () => {
+    const {offset, newItemLoading} = this.state
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !newItemLoading) {
+        this.onRequest(offset + 9);
+    }
+  };
+
+  onCharListLoaded = (newCharList) => {
+    this.setState(({offset, charList}) => ({ // Возвращаем объект из этой функции, когда пишем просто ()
+        charList: [...charList, ...newCharList], // если первый раз запускаем эту функцию, то в charList пустой массив. Формируется из 2 сущностей, старых и новых
+        loading: false,
+        newItemLoading: false,
+        offset: offset + 9
+      }));
   };
 
   onError = () => {
@@ -56,7 +83,7 @@ class CharList extends Component {
   }
 
   render() {
-    const { charList, loading, error } = this.state;
+    const { charList, loading, error, offset, newItemLoading} = this.state;
 
     const items = this.renderItems(charList);
 
@@ -69,8 +96,10 @@ class CharList extends Component {
         {errorMessage}
         {spinner}
         {content}
-
-        <button className="button button__main button__long">
+        <button 
+            className="button button__main button__long"
+            disabled={newItemLoading} // В зависимости от newItemLoading, будет работать наш disabled
+            onClick={() => this.onRequest(offset)}>
           <div className="inner">load more</div>
         </button>
       </div>

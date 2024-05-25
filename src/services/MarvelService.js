@@ -1,6 +1,7 @@
 class MarvelService { // Создаем класс, чтобы создавать экземпляры класса в других компонентах, чтобы использовать внутренние методы
     _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     _apiKey = 'apikey=730131ab4b7b1b5397bfa3c23124bd3f';
+    _baseOffset = 210;
 
     getResource = async (url) => {
         let res = await fetch(url);
@@ -12,8 +13,8 @@ class MarvelService { // Создаем класс, чтобы создават�
         return await res.json();
     }
     // Запросы к API
-    getAllCharacters = async () => { // Получить всех персонажей
-        const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=210&${this._apiKey}`);
+    getAllCharacters = async (offset = this._baseOffset) => { // Получить всех персонажей
+        const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`);
         return res.data.results.map(this._transformCharacter); // Создаем массив с новыми объектами
     }
  
