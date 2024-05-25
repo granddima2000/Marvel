@@ -41,7 +41,7 @@ class RandomChar extends Component {
         this.setState({
             loading: false,
             error: true
-        })
+        });
     };
 
     updateChar = () => {
@@ -59,13 +59,13 @@ class RandomChar extends Component {
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
         const content = !(loading || error) ? <View char={char}/> : null;
-
+        const updateChar = !loading ? this.updateChar : null;
         return (
             <div className="randomchar">
                 {errorMessage}
                 {spinner}
                 {content}
-                <div className="randomchar__static">
+                <div className="randomchar__static"> 
                     <p className="randomchar__title">
                         Random character for today!<br/>
                         Do you want to get to know him better?
@@ -73,7 +73,7 @@ class RandomChar extends Component {
                     <p className="randomchar__title">
                         Or choose another one
                     </p>
-                    <button onClick={this.updateChar} className="button button__main">
+                    <button onClick={updateChar} className="button button__main">
                         <div  className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>

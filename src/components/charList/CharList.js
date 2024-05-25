@@ -9,8 +9,8 @@ class CharList extends Component {
   state = {
     charList: [],
     loading: true,
-    error: false,
-  };
+    error: false
+  }
 
   marvelService = new MarvelService();
 
@@ -38,9 +38,9 @@ class CharList extends Component {
 
   renderItems(arr) {
     const items = arr.map((item) => {
-      let imgStyle = { objectFit: "unset" };
+      let imgStyle = { 'objectFit' : "unset" };
       if (item.thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available") {
-        imgStyle = { objectFit: "cover" };
+        imgStyle = { 'objectFit' : "cover" };
       }
       return (
         <li
