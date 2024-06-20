@@ -1,4 +1,6 @@
 import { Component } from "react";
+import PropTypes from 'prop-types';
+
 import MarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Skeleton from "../skeleton/Skeleton";
@@ -79,8 +81,6 @@ class CharInfo extends Component {
   }
 }
 
-
-
 const View = ({ char }) => { // Занимается логикой и состоянием
   const {name, description, thumbnail, homepage, wiki, comics} = char;
 
@@ -113,19 +113,21 @@ const View = ({ char }) => { // Занимается логикой и сост�
 
         {comics.length > 0 ? null : 'There is no comics with this character'}
         {
-        comics.slice(0, 10).map((item, i) => {
-          return (
-            <li key={i} className="char__comics-item">
-              {item.name}
-            </li>
-          )
-        })
+          comics.slice(0, 10).map((item, i) => {
+            return (
+              <li key={i} className="char__comics-item">
+                {item.name}
+              </li>
+            )
+          })
         }
-        
-        
       </ul>
     </>
   );
+};
+
+CharInfo.propTypes = {
+  charId: PropTypes.number
 };
 
 export default CharInfo;
