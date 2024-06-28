@@ -1,29 +1,44 @@
-class MarvelService { // Создаем класс, чтобы создавать экземпляры класса в других компонентах, чтобы использовать внутренние методы
-    _apiBase = 'https://gateway.marvel.com:443/v1/public/';
-    _apiKey = 'apikey=730131ab4b7b1b5397bfa3c23124bd3f';
-    _baseOffset = 210;
+import { useHttp } from "../hooks/http.hook";
 
-    getResource = async (url) => {
-        let res = await fetch(url);
+const useMarvelService = () => { // Создаем класс, чтобы создавать экземпляры класса в других компонентах, чтобы использовать внутренние методы
+    const {loading, request, error, clearError} = useHttp();
 
-        if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, status ${res.status}`);
-        }
+    const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
+    const _apiKey = 'apikey=730131ab4b7b1b5397bfa3c23124bd3f';
+    const _baseOffset = 210;
 
-        return await res.json();
-    }
     // Запросы к API
-    getAllCharacters = async (offset = this._baseOffset) => { // Получить всех персонажей
-        const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`);
-        return res.data.results.map(this._transformCharacter); // Создаем массив с новыми объектами
+    const getAllCharacters = async (offset = _baseOffset) => { // Получить всех персонажей
+        const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter); // Создаем массив с новыми объектами
     }
  
-    getCharacter = async (id) => { // Получение 1 персонажа
-        const res = await this.getResource(`${this._apiBase}characters/${id}?${this._apiKey}`);
-        return this._transformCharacter(res.data.results[0]); // вызываем с результатом res
+    const getCharacter = async (id) => { // Получение 1 персонажа
+        const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+        return _transformCharacter(res.data.results[0]); // вызываем с результатом res
     }
 
-    _transformCharacter = (char) => { // Универсальный метод
+    const getComics = async (id) => {
+        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+        return _transformComics(res.data.results[0]);
+    };
+
+    const getAllComics = async (offset = _baseOffset) => {
+        const res = await request(`${_apiBase}comics?issueNumber=8&limit=8&offset=${offset}&${_apiKey}`);
+        return res.data.results.map(_transformComics);
+    };
+
+    const _transformComics = (comics) => {
+        return {
+            id: comics.id,
+            title: comics.title,
+            description: comics.description || "There is no description",
+            price: comics.prices[0].price ? `${comics.prices[0].price}$` : 'not available',
+            thumbnail: comics.thumbnail.path + '.' + comics.thumbnail.extension
+        };
+    }
+
+    const _transformCharacter = (char) => { // Универсальный метод
         return {
             id: char.id,
             name: char.name,
@@ -34,6 +49,8 @@ class MarvelService { // Создаем класс, чтобы создават�
             comics: char.comics.items
         }
     } // Трансформируем данные
+
+    return {loading, error, clearError, getAllCharacters, getCharacter, getAllComics, getComics};
 }
 
-export default MarvelService;
+export default useMarvelService;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Skeleton from "../skeleton/Skeleton";
 import Spinner from "../spinner/Spinner";
@@ -11,10 +11,7 @@ import "./charInfo.scss";
 const CharInfo = (props) => {
 
   const [char, setChar] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  const marvelService = new MarvelService();
+  const {loading, error, clearError, getCharacter} = useMarvelService();
 
   useEffect(() => {
     updateChar();
@@ -25,27 +22,14 @@ const CharInfo = (props) => {
     if (!charId) { // Если у нас нет charId, то будет отображать компонент скелетон
       return;
     }
-
-    onCharLoading();
-    marvelService
-      .getCharacter(charId)
+    
+    clearError();
+    getCharacter(charId)
       .then(onCharLoaded)
-      .catch(onError);
   };
 
   const onCharLoaded = (char) => {
-    setLoading(false)
     setChar(char)
-  };
-
-  const onCharLoading = () => {
-    setLoading(true)
-  };
-
-  const onError = () => {
-    // Отображает ошибку
-    setError(true)
-    setLoading(false)
   };
 
   const skeleton = char || loading || error ? null : <Skeleton />; // Отображаем компонент скелетона, если ничего из этих не true

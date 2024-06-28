@@ -1,7 +1,32 @@
+import { useEffect, useState } from 'react';
 import './singleComic.scss';
 import xMen from '../../resources/img/x-men.png';
+import useMarvelService from '../../services/MarvelService';
+
 
 const SingleComic = () => {
+
+    // const [comics, setComics] = useState({});
+    // const {loading, error, getComics, clearError} = useMarvelService();
+
+    // useEffect(() => {
+    //     updateComics();
+    // }, []);
+
+    // const updateComics = () => {
+    //     // const id = Math.floor(Math.random() * (1011400 - 1011000)) + 1011000;
+
+    //     clearError();
+    //     getComics()
+    //         .then(onComicsLoaded)
+    // };  
+
+    // const onComicsLoaded = (comics) => {
+    //     setComics(comics);
+    // };
+
+    // const content = !(loading || error || !comics) ? 
+
     return (
         <div className="single-comic">
             <img src={xMen} alt="x-men" className="single-comic__img"/>

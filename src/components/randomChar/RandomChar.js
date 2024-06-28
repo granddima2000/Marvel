@@ -1,54 +1,40 @@
-import { Component, useEffect, useState } from 'react';
-import MarvelService from '../../services/MarvelService';
+import { useEffect, useState } from 'react';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
+import useMarvelService from '../../services/MarvelService';
 
 import mjolnir from '../../resources/img/mjolnir.png';
 import './randomChar.scss';
 
 const RandomChar = () => {
 
-    const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
-    const marvelService = new MarvelService(); // В классе будет сущестсовать новое свойство this.marvelService
+    const [char, setChar] = useState(null);
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar();
-        const timerId = setInterval(updateChar, 60000) // Способ сразу вызвать метод. Все обновления сразу в componentDidMount
+        const timerId = setInterval(updateChar, 60000)
 
         return () => {
             clearInterval(timerId);
         };
-    }, []);
+    }, [])
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(false);
     };
-
-    const onCharLoading = () => {
-        setLoading(true);
-    };
-
-    const onError = () => { // Отображает ошибку
-        setError(true);
-        setLoading(false);
-    };
-
+    
     const updateChar = () => {
-        const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000); // Получение случайных персонажей
-        onCharLoading();
-        marvelService
-            .getCharacter(id)
-            .then(onCharLoaded) // Аргумент приходящий в .then автоматом подставляется this.onChatLoaded
-            .catch(onError);
+        clearError();
+        const id = Math.floor(Math.random() * (1011400 - 1011000)) + 1011000; // Получение случайных персонажей
+        getCharacter(id)
+            .then(onCharLoaded);
     };
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? <View char={char}/> : null;
+    const content = !(loading || error || !char) ? <View char={char}/> : null;
+
     return (
         <div className="randomchar">
             {errorMessage}
