@@ -1,20 +1,31 @@
+import { Link, NavLink, useNavigate} from 'react-router-dom';
 import './appHeader.scss';
 
 const AppHeader = () => {
+
+    let navigate = useNavigate();
+
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+
     return (
         <header className="app__header">
             <h1 className="app__title">
-                <a href="#">
+                <Link to="/">
                     <span>Marvel</span> information portal
-                </a>
+                </Link>
             </h1>
             <nav className="app__menu">
                 <ul>
-                    <li><a href="#">Characters</a></li>
+                    <li><NavLink end className={({isActive}) => isActive ? 'app__menu_active' : undefined} to="/">Characters</NavLink></li>
                     /
-                    <li><a href="#">Comics</a></li>
+                    <li><NavLink end className={({isActive}) => isActive ? 'app__menu_active' : undefined} to="/comics">Comics</NavLink></li>
                 </ul>
             </nav>
+            <button onClick={() => handleNavigation('/')}>назад</button>
+            <button onClick={() => handleNavigation('/comics')}>вперед</button>
         </header>
     )
 }

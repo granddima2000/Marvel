@@ -1,7 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
-import uw from '../../resources/img/UW.png';
-import xMen from '../../resources/img/x-men.png';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorBoundary/ErrorBoundary';
 import useMarvelService from '../../services/MarvelService';
@@ -66,7 +64,11 @@ const ComicsList = () => {
             {errorMessage}
             {spinner}
             {items}
-            <button onClick={() => onRequest(offset)} className="button button__main button__long">
+            <button 
+            onClick={() => onRequest(offset)} 
+            className="button button__main button__long"
+            disabled={newItemLoading}
+            style={{'display': comicsEnded ? 'none' : 'block'}}>
                 <div className="inner">load more</div>
             </button>
         </div>

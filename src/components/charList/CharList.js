@@ -17,11 +17,6 @@ const CharList = (props) => {
 
   useEffect(() => {
     onRequest(offset, true);
-    // window.addEventListener('scroll', handleScroll);
-
-    // return () => {
-    //   window.removeEventListener('scroll', handleScroll)
-    // };
   }, []);
 
   const onRequest = (offset, initial) => { // Отвечает за запрос на сервер
@@ -29,13 +24,6 @@ const CharList = (props) => {
     getAllCharacters(offset)
       .then(onCharListLoaded)
   };
-
-
-  // const handleScroll = () => {
-  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !newItemLoading) {
-  //       onRequest(offset + 9);
-  //   }
-  // };
 
   const onCharListLoaded = (newCharList) => {
     let ended = false;
