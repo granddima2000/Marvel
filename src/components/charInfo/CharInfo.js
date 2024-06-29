@@ -7,8 +7,11 @@ import Skeleton from "../skeleton/Skeleton";
 import Spinner from "../spinner/Spinner";
 
 import "./charInfo.scss";
+import { Link, useLocation } from "react-router-dom";
 
 const CharInfo = (props) => {
+
+  const location = useLocation();
 
   const [char, setChar] = useState(null);
   const {loading, error, clearError, getCharacter} = useMarvelService();
@@ -35,7 +38,7 @@ const CharInfo = (props) => {
   const skeleton = char || loading || error ? null : <Skeleton />; // Отображаем компонент скелетона, если ничего из этих не true
   const errorMessage = error ? <ErrorMessage /> : null;
   const spinner = loading ? <Spinner /> : null;
-  const content = !(loading || error || !char) ? <View char={char} /> : null; 
+  const content = !(loading || error || !char) ? <View char={char} location={location} /> : null; 
 
   return (
     <div className="char__info">
@@ -47,7 +50,7 @@ const CharInfo = (props) => {
   );
 }
 
-const View = ({ char }) => { // Занимается логикой и состоянием
+const View = ({ char, location }) => { // Занимается логикой и состоянием
   const {name, description, thumbnail, homepage, wiki, comics} = char;
 
   let imgStyle = { 'objectFit' : "contain" };
@@ -81,9 +84,13 @@ const View = ({ char }) => { // Занимается логикой и сост�
         {
           comics.slice(0, 10).map((item, i) => {
             return (
-              <li key={i} className="char__comics-item">
+              <Link to={`/comics/${item.resourceURI.split('/').pop()}`} state={{ from: location}} key={i} className="char__comics-link">
+                <li className="char__comics-item">
                 {item.name}
-              </li>
+                
+                </li>
+              </Link>
+              
             )
           })
         }

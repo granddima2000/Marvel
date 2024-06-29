@@ -21,11 +21,15 @@ const AppHeader = () => {
                 <ul>
                     <li><NavLink end className={({isActive}) => isActive ? 'app__menu_active' : undefined} to="/">Characters</NavLink></li>
                     /
-                    <li><NavLink end className={({isActive}) => isActive ? 'app__menu_active' : undefined} to="/comics">Comics</NavLink></li>
+                    <li><NavLink className={({isActive}) => isActive ? 'app__menu_active' : undefined} to="/comics">Comics</NavLink></li>
                 </ul>
             </nav>
-            <button onClick={() => handleNavigation('/')}>назад</button>
-            <button onClick={() => handleNavigation('/comics')}>вперед</button>
+            <button className='button button__main' onClick={() => handleNavigation('/')}>
+                <div className="inner">назад</div>
+            </button>
+            <button className='button button__main' onClick={() => handleNavigation('/comics')}>
+                <div className="inner">вперед</div>
+            </button>
         </header>
     )
 }

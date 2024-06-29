@@ -18,7 +18,7 @@ const useMarvelService = () => { // Создаем класс, чтобы соз
         return _transformCharacter(res.data.results[0]); // вызываем с результатом res
     }
 
-    const getComics = async (id) => {
+    const getComic = async (id) => {
         const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
         return _transformComics(res.data.results[0]);
     };
@@ -33,6 +33,8 @@ const useMarvelService = () => { // Создаем класс, чтобы соз
             id: comics.id,
             title: comics.title,
             description: comics.description || "There is no description",
+            pageCount: comics.pageCount ? `${comics.pageCount} p.` : 'No information about the number of pages',
+            language: comics.textObjects.language || 'en-us',
             price: comics.prices[0].price ? `${comics.prices[0].price}$` : 'not available',
             thumbnail: comics.thumbnail.path + '.' + comics.thumbnail.extension
         };
@@ -46,11 +48,15 @@ const useMarvelService = () => { // Создаем класс, чтобы соз
             thumbnail: `${char.thumbnail.path}.${char.thumbnail.extension}`,
             homepage: char.urls[0].url, // urls
             wiki: char.urls[1].url,
-            comics: char.comics.items
+            comics: char.comics.items,
+            // comicId: comics[0].map(item => item.resourceURI.split('/').pop())
+
+
+
         }
     } // Трансформируем данные
 
-    return {loading, error, clearError, getAllCharacters, getCharacter, getAllComics, getComics};
+    return {loading, error, clearError, getAllCharacters, getCharacter, getAllComics, getComic};
 }
 
 export default useMarvelService;

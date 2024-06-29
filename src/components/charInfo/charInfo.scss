@@ -9,8 +9,7 @@
 
         z-index: 5;
         background-color: #fff;
-        // position: -webkit-sticky; /* Для поддержки Safari */
-        top: 5px; /* Отступ сверху, который соответствует вашему случаю до красной линии */
+        top: 5px;
         right: 0;
         &-name {
             font-weight: bold;
@@ -58,6 +57,10 @@
             line-height: 25px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             margin-top: 10px;
+        }
+        &-link {
+            display: flex;
+            
         }
     }
     &__select {
