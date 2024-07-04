@@ -83,7 +83,11 @@ const View = ({ char, location }) => { // Занимается логикой и
         {
           comics.slice(0, 10).map((item, i) => {
             return (
-              <Link to={`/comics/${item.resourceURI.split('/').pop()}`} state={{ from: location}} key={i} className="char__comics-link">
+              <Link 
+                    to={`/comics/${item.resourceURI.split('/').pop()}`} 
+                    state={{from: location}} 
+                    key={i} 
+                    className="char__comics-link">
                 <li className="char__comics-item">{item.name} </li>
               </Link> 
             )

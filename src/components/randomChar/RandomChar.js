@@ -28,7 +28,8 @@ const RandomChar = () => {
         clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000)) + 1011000; // Получение случайных персонажей
         getCharacter(id)
-            .then(onCharLoaded);
+            .then(onCharLoaded)
+            .catch((error) => {console.error("Failed to load comic:", error)})
     };
 
     const errorMessage = error ? <ErrorMessage/> : null;

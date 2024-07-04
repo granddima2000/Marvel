@@ -1,30 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
-import useMarvelService from "../../../services/MarvelService";
-import ErrorMessage from "../../errorMessage/ErrorMessage";
-import Spinner from "../../spinner/Spinner";
+import useMarvelService from "../../services/MarvelService";
+import ErrorMessage from "../errorMessage/ErrorMessage";
+import Spinner from "../spinner/Spinner";
 
 import './singleComicPage.scss';
-
 
 const SingleComicPage = () => {
     const {comicId} = useParams();
     const location = useLocation();
     const navigate = useNavigate();
     const [comic, setComic] = useState(null);
+
     const {loading, error, getComic, clearError} = useMarvelService();
     
     useEffect(() => {
         updateComic();
-        console.log(comicId)
     }, [comicId]);
 
     const updateComic = () => {
-
         clearError();
         getComic(comicId)
             .then(onComicLoaded)
+            .catch((error) => {console.error("Failed to load comic:", error)})
     };  
 
     const onComicLoaded = (comic) => {
@@ -41,7 +40,7 @@ const SingleComicPage = () => {
 
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error || !comic) ? <View comic={comic} handleBackClick={handleBackClick} /> : null; 
+    const content = !(loading || error || !comic) ? <View comic={comic} handleBackClick={handleBackClick} /> : null;
 
     return (
         <>
@@ -67,7 +66,7 @@ const View = ({comic, handleBackClick}) => {
                 <div className="single-comic__price">{price}</div>
             </div>
             <button onClick={handleBackClick} className="button__main">
-                <div className="inner">Назад</div>
+                <div className="single-comic__back">Back to all</div>
             </button>
             {/* <Link to="/comics" className="single-comic__back">Back to all</Link> */}
         </div>
