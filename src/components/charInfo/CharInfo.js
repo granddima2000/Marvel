@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo} from "react";
+import { Link, useLocation } from "react-router-dom";
 import PropTypes from 'prop-types';
 
 import useMarvelService from "../../services/MarvelService";
@@ -7,9 +8,9 @@ import Skeleton from "../skeleton/Skeleton";
 import Spinner from "../spinner/Spinner";
 
 import "./charInfo.scss";
-import { Link, useLocation } from "react-router-dom";
 
-const CharInfo = (props) => {
+
+const CharInfo = memo((props) => {
 
   const location = useLocation();
 
@@ -48,7 +49,7 @@ const CharInfo = (props) => {
       {content}
     </div>
   );
-}
+})
 
 const View = ({ char, location }) => { // Занимается логикой и состоянием
   const {name, description, thumbnail, homepage, wiki, comics} = char;

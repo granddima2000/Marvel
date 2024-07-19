@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import useMarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
+import Page404 from '../pages/404';
 import Spinner from "../spinner/Spinner";
 
 import './singleComicPage.scss';
@@ -39,12 +40,14 @@ const SingleComicPage = () => {
     };
 
     const errorMessage = error ? <ErrorMessage /> : null;
+    const errorId =  error || comicId.search(/\D/ig) >= 0 ? <Page404/>: null;
     const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error || !comic) ? <View comic={comic} handleBackClick={handleBackClick} /> : null;
+    const content = !(loading || error || errorId || !comic) ? <View comic={comic} handleBackClick={handleBackClick} /> : null;
 
     return (
         <>
             {errorMessage}
+            {errorId}
             {spinner}
             {content}
         </>

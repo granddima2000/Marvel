@@ -1,0 +1,41 @@
+import { useRef, useCallback } from 'react';
+// Доделать кастомный хук 
+const useIntersectionObserver = (callback, newItemLoading) => {
+  const observer = useRef();
+
+  const lastElementRef = useCallback(
+    (node) => {
+      if (newItemLoading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          callback();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [newItemLoading, callback]
+  );
+
+  const getCombinedRefs = (index, arrLength, ...refs) => {
+    return useCallback((node) => {
+      if (index === arrLength - 1) {
+        refs.push(lastElementRef);
+      }
+
+      refs.forEach(ref => {
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      });
+    }, [refs, index, arrLength]);
+  };
+
+  return { getCombinedRefs };
+};
+
+export default useIntersectionObserver;

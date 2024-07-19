@@ -12,6 +12,11 @@ const useMarvelService = () => { // Создаем класс, чтобы соз
         const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
         return res.data.results.map(_transformCharacter); // Создаем массив с новыми объектами
     }
+
+    const getCharacterByName = async (name) => {
+        const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter);
+    }
  
     const getCharacter = async (id) => { // Получение 1 персонажа
         const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
@@ -56,7 +61,7 @@ const useMarvelService = () => { // Создаем класс, чтобы соз
         }
     } // Трансформируем данные
 
-    return {loading, error, clearError, getAllCharacters, getCharacter, getAllComics, getComic};
+    return {loading, error, clearError, getCharacterByName, getAllCharacters, getCharacter, getAllComics, getComic};
 }
 
 export default useMarvelService;

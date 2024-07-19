@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 
 export const useHttp = () => {
 	const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+	const [error, setError] = useState(null);
 	
 	const request = useCallback(async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json'}) => {
 
@@ -16,11 +16,6 @@ export const useHttp = () => {
 			}
 	
 			const data = await response.json(); // Получаем конкретно данные, присваиваем data
-
-			// if (data.data.results.length === 0) {
-			// 		setComicNotFound(true);
-			// 		throw new Error('Comic not found');
-		    // }
         
 			setLoading(false); // Если данные загрузились, то загрузка устанавливается в false
 			return data; // функция request вернет данные от сервера. Чистые данные от API

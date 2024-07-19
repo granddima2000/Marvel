@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorBoundary/ErrorBoundary';
@@ -33,33 +34,41 @@ const ComicsList = () => {
             ended = true;
         }
 
-        setComicsList(() => [...comicsList, ...newComicsList]);
+        setComicsList((comicsList) => [...comicsList, ...newComicsList]);
         setnewItemLoading(false);
         setOffset(offset => offset + 8);
         setComicsEnded(ended);
     };
 
     function renderItems(arr) {
-        const items = arr.map(item => {
+        const items = arr.map((item, i)=> {
             return (
-                <li className="comics__item" key={item.id}>
+                <CSSTransition key={item.id} timeout={500} classNames={'comics__item'}>
+                    <li className="comics__item">
                     <Link to={`/comics/${item.id}`}>
                         <img src={item.thumbnail} alt={item.title} className="comics__item-img"/>
                         <div className="comics__item-name">{item.title}</div>
                         <div className="comics__item-price">{item.price}</div>
                     </Link>
                 </li>
+                </CSSTransition>
                 
             )
         });
-        return <ul className="comics__grid">{items}</ul>
+        return (
+            <ul className="comics__grid">
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
+            </ul>
+        )
             
     };
 
     const items = renderItems(comicsList);
 
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
     const errorMessage = error  ? <ErrorMessage/> : null;
+    const spinner = loading && !newItemLoading ? <Spinner/> : null;
 
     return (
         <div className="comics__list">
