@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet';
+
 import './singleCharacterPage.scss';
 
 const SingleCharacterPage = ({data, handleBackClick}) => {
@@ -6,6 +8,13 @@ const SingleCharacterPage = ({data, handleBackClick}) => {
 
     return (
         <div className="single-comic">
+            <Helmet>
+                <meta
+                name="description"
+                content={`${name} descr name`}
+                />
+                <title>{name}</title>
+            </Helmet>
             <img src={thumbnail} alt={name} className="single-comic__img"/>
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{name}</h2>
@@ -20,4 +29,8 @@ const SingleCharacterPage = ({data, handleBackClick}) => {
 }
 
 export default SingleCharacterPage;
+
+
+
+
 

@@ -9,7 +9,7 @@ import AppBanner from "../appBanner/AppBanner";
 const SinglePage = ({Component, dataType}) => {
 	const {id} = useParams();
 	const [data, setData] = useState(null);
-    const location = useLocation();
+	const location = useLocation();
 	const navigate = useNavigate();
 	const {loading, error, getComic, getCharacter, clearError} = useMarvelService();
 

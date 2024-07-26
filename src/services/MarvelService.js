@@ -56,8 +56,6 @@ const useMarvelService = () => { // Создаем класс, чтобы соз
             comics: char.comics.items,
             // comicId: comics[0].map(item => item.resourceURI.split('/').pop())
 
-
-
         }
     } // Трансформируем данные
 

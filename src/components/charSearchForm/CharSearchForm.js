@@ -35,7 +35,6 @@ const CharSearchForm = () => {
         <div className="char__search-error">The character was not found. Check the name and try again</div>
 
 	return (
-        
 		<div className="char__search-form">
 			<Formik
                 initialValues={{
@@ -71,6 +70,5 @@ const CharSearchForm = () => {
 		
 	)
 };
-
 
 export default CharSearchForm;
